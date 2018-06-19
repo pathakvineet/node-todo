@@ -182,7 +182,7 @@ var dataFromJson;
 
 
 var heatmapChart = function(valueOfState) {
-       d3.json("statesMore.json",function(error, data){
+       d3.json("js/statesMore.json",function(error, data){
 	//console.log(valueOfState); console.log(data[2]);
 	dataFromJson = data;
 	var keys = Object.keys(data[valueOfState]);
