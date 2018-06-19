@@ -188,7 +188,7 @@ var heatmapChart = function(valueOfState) {
 	var keys = Object.keys(data[valueOfState]);
 	var valuesArray = [], valuesArrayTemp = [];
 	var heatMapObj = {};	
-	for (var i=2; i<keys.length; i++) {
+	for (var i=2; i<keys.length - 1; i++) {
     		var key = keys[i];
 		//console.log(i);
 		day = i - 1;
@@ -373,7 +373,7 @@ var barChartDraw = function(stateValue, dayValue){
 	var keys = Object.keys(dataFromJson[stateValue]);
 	var valuesArray = [], valuesArrayTemp = [];
 	var heatMapObj = {};	
-	for (var i=2; i<keys.length; i++) {
+	for (var i=2; i<keys.length - 1; i++) {
     		var key = keys[i];
 		day = i - 1;
 		valuesArrayTemp = dataFromJson[stateValue][dayValue];
