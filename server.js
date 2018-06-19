@@ -7,9 +7,19 @@ var database = require('./config/database'); 			// load the database config
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var env = require('dotenv').load();
+
 
 // configuration ===============================================================
-mongoose.connect(process.env.CUSTOMCONNSTR_MyConnectionString || database.localUrl); 	// Connect to local MongoDB instance. A remoteUrl is also available (modulus.io)
+//console.log(COSMOSDB_CONNSTR)
+
+//mongoose.connect(database.localUrl);
+
+
+mongoose.connect("mongodb://mean-demo:LkfhYRpom62ZRE7P8uwTPHTnSogHY1GHb8ZgvB2MXXCQn94YtIInN7tBvF5Yk3PS6Hns42xSzTCFkUBQwWkZ3g==@mean-demo.documents.azure.com:10255/?ssl=true&replicaSet=globaldb");
+ 	// Connect to local MongoDB instance. A remoteUrl is also available (modulus.io)
+
+
 
 app.use(express.static('./public')); 		// set the static files location /public/img will be /img for users
 app.use(morgan('dev')); // log every request to the console
@@ -25,3 +35,7 @@ require('./app/routes.js')(app);
 // listen (start app with node server.js) ======================================
 app.listen(port);
 console.log("App listening on port " + port);
+
+
+//mongoose.connect("mongodb://mean-demo:LkfhYRpom62ZRE7P8uwTPHTnSogHY1GHb8ZgvB2MXXCQn94YtIInN7tBvF5Yk3PS6Hns42xSzTCFkUBQwWkZ3g==@mean-demo.documents.azure.com:10255/?ssl=true&replicaSet=globaldb");
+
