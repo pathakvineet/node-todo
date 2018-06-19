@@ -10,13 +10,14 @@ var methodOverride = require('method-override');
 var env = require('dotenv').load();
 
 
+
 // configuration ===============================================================
 //console.log(COSMOSDB_CONNSTR)
 
 //mongoose.connect(database.localUrl);
 
 
-mongoose.connect(process.env.MyConnectionString);
+mongoose.connect("mongodb://mean-demo:LkfhYRpom62ZRE7P8uwTPHTnSogHY1GHb8ZgvB2MXXCQn94YtIInN7tBvF5Yk3PS6Hns42xSzTCFkUBQwWkZ3g==@mean-demo.documents.azure.com:10255/?ssl=true&replicaSet=globaldb");
  	// Connect to local MongoDB instance. A remoteUrl is also available (modulus.io)
 
 

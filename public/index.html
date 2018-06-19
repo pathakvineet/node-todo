@@ -75,7 +75,7 @@
 		<div id="chart" align="center"></div>
 	 <div id="map"></div>
 	 <div id="state">
-	 	<p id="statefill">The State</p>
+	 	<p id="statefill"></p>
 	 </div>
 	 <div id="bar"></div>
 	</div>
@@ -182,7 +182,7 @@ var dataFromJson;
 
 
 var heatmapChart = function(valueOfState) {
-       d3.json("https://vineet-node-todo.azurewebsites.net/api/todos",function(error, data){
+       d3.json("https://localhost/api/todos",function(error, data){
 	//console.log(valueOfState); console.log(data[2]);
 	dataFromJson = data;
 	var keys = Object.keys(data[valueOfState]);
