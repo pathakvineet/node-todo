@@ -174,12 +174,13 @@ var margin = { top: 50, right: 0, bottom: 100, left: 30 },
 	
 
     
-	
-var dataFromJson;
 
+var dataFromJson;
+ var currState; 
 
 /**********/
 
+//https://vineet-node-todo.azurewebsites.net/api/todos
 
 var heatmapChart = function(valueOfState) {
        d3.json("https://vineet-node-todo.azurewebsites.net/api/todos",function(error, data){
@@ -188,7 +189,7 @@ var heatmapChart = function(valueOfState) {
 	var keys = Object.keys(data[valueOfState]);
 	var valuesArray = [], valuesArrayTemp = [];
 	var heatMapObj = {};	
-	for (var i=2; i<keys.length - 1; i++) {
+	for (var i=2; i< 9 ; i++) {
     		var key = keys[i];
 		//console.log(i);
 		day = i - 1;
@@ -221,7 +222,7 @@ var heatmapChart = function(valueOfState) {
               .attr("width", gridSize)
               .attr("height", gridSize)
              .style("fill", colors[0])
-		.on("mouseover", function(d){barChartDraw(0, d.day)});
+		.on("mouseover", function(d){barChartDraw(currState, d.day)});
  
           cards.transition().duration(1000)
               .style("fill", function(d) { return colorScale(d.value); });
@@ -250,23 +251,23 @@ var heatmapChart = function(valueOfState) {
             .attr("x", function(d, i) { return legendElementWidth * i; })
             .attr("y", height + gridSize);
 	
-          legend.exit().remove(); //barChartDraw();	
+          legend.exit().remove(); 	
+	//console.log(currState);
+	//barChartDraw("WY", 0);
 
-
-	barChartDraw(0, "Monday");	
+		
 });}
 
  heatmapChart(0);
 
 
 
-
-     
+ 	   
 	/****/
 
 	//svg.selectAll("#chart rect");
 
-var currState; 
+
 var newsvg = d3.select("#map").append("svg")
 						   .attr("width",320)
 						   .attr("height",202);
@@ -303,40 +304,11 @@ var newsvg = d3.select("#map").append("svg")
 		
 		currState = d3.select(this).attr('id');
 		console.log(currState);
-		getDataSet(currState);
+		var stateIndex = getDataSet(currState) ;
+		barChartDraw(currState, 0);
 			
 	});
 
-	
-
-	function getDataSet(currstate){
-		//if(currstate === "AK"){heatmapChart(datasets[0]);}
-		//else if(currstate === "TX"){heatmapChart(datasets[1]);}
-		switch(currstate)
-		{
-			case "HI":
-				heatmapChart(0);
-				break;
-			case "AK":
-				heatmapChart(1);
-				break;
-			case "FL":
-				heatmapChart(2);
-				break;
-			case "SC":
-				heatmapChart(3);
-				break;
-			case "GA":
-				heatmapChart(4);
-				break;
-			case "AL":
-				heatmapChart(5);
-				break;
-			
-		}
-	}
-
-/*******/
 
 
 
@@ -369,17 +341,19 @@ var bsvg = d3.select("#bar").append("svg")
 
 
 var barChartDraw = function(stateValue, dayValue){
-	dayValue = processDay(dayValue);
+	console.log(stateValue);stateValue = getStateSet(stateValue) ; console.log(stateValue);
+	dayValue = processDay(dayValue); console.log(dayValue);
+	console.log(typeof(dataFromJson));
 	var keys = Object.keys(dataFromJson[stateValue]);
 	var valuesArray = [], valuesArrayTemp = [];
 	var heatMapObj = {};	
-	for (var i=2; i<keys.length - 1; i++) {
+	for (var i=2; i< 9; i++) {
     		var key = keys[i];
 		day = i - 1;
 		valuesArrayTemp = dataFromJson[stateValue][dayValue];
 		
 	}
-	console.log(valuesArrayTemp);
+	//console.log(valuesArrayTemp);
 	data = valuesArrayTemp;
 	by.domain([0, d3.max(data, function(d) { return d; })]);
 
@@ -392,13 +366,13 @@ var barChartDraw = function(stateValue, dayValue){
       .attr("x", function(d, i) { return (i * 10) + 10; })
       .attr("width", 7)
       .attr("y", function(d) {return by(d); })
-      .attr("height", function(d) { console.log(bheight - by(d)); return bheight - by(d); })
+      .attr("height", function(d) {/* console.log(bheight - by(d));*/ return bheight - by(d); })
 	.style('fill-opacity', .7)
 	bsvg.selectAll("#bar rect")
 		.on('mouseover', function(d, i) {
                 var currentState = this;
                 d3.select(this).style('fill-opacity', 1);
-           
+           	//console.log(currentState);
                 })
                 .on('mouseout', function(d, i) {
 
@@ -408,6 +382,163 @@ var barChartDraw = function(stateValue, dayValue){
                             });
                 });
 }
+	
+
+	function getDataSet(currstate){
+		//if(currstate === "AK"){heatmapChart(datasets[0]);}
+		//else if(currstate === "TX"){heatmapChart(datasets[1]);}
+		switch(currstate)
+		{
+			case "WY":
+				heatmapChart(0);
+				break;
+			case "WI":
+				heatmapChart(1);
+				break;
+			case "WV":
+				heatmapChart(2);
+				break;
+			case "WA":
+				heatmapChart(3);
+				break;
+			case "VT":
+				heatmapChart(4);
+				break;
+			case "UT":
+				heatmapChart(5);
+				break;
+			case "MN":
+				heatmapChart(6);
+				break;
+			case "MS":
+				heatmapChart(7);
+				break;
+			case "MO":
+				heatmapChart(8);
+				break;
+			case "MN":
+				heatmapChart(9);
+				break;
+			case "NE":
+				heatmapChart(10);
+				break;
+			case "NH":
+				heatmapChart(11);
+				break;
+			case "NJ":
+				heatmapChart(12);
+				break;
+			case "NM":
+				heatmapChart(13);
+				break;
+			case "NY":
+				heatmapChart(14);
+				break;
+			case "NC":
+				heatmapChart(15);
+				break;
+			case "ND":
+				heatmapChart(16);
+				break;
+			case "OH":
+				heatmapChart(17);
+				break;
+			case "OK":
+				heatmapChart(18);
+				break;
+			case "OR":
+				heatmapChart(19);
+				break;
+			case "SC":
+				heatmapChart(20);
+				break;
+			case "SD":
+				heatmapChart(21);
+				break;
+			default:
+				heatMapChart(0);
+		}
+	}
+
+	function getStateSet(currstate){
+		//if(currstate === "AK"){heatmapChart(datasets[0]);}
+		//else if(currstate === "TX"){heatmapChart(datasets[1]);}
+		switch(currstate)
+		{
+			case "WY":
+				return 0;
+				break;
+			case "WI":
+				return 1;
+				break;
+			case "WV":
+				return 2;
+				break;
+			case "WA":
+				return 3;
+				break;
+			case "VT":
+				return 4;
+				break;
+			case "UT":
+				return 5;
+				break;
+			case "MN":
+				return 6;
+				break;
+			case "MS":
+				return 7;
+				break;
+			case "MO":
+				return 8;
+				break;
+			case "MN":
+				return 9;
+				break;
+			case "NE":
+				return 10;
+				break;
+			case "NH":
+				return 11;
+				break;
+			case "NJ":
+				return 12;
+				break;
+			case "NM":
+				return 13;
+				break;
+			case "NY":
+				return 14;
+				break;
+			case "NC":
+				return 15;
+				break;
+			case "ND":
+				return 16;
+				break;
+			case "OH":
+				return 17;
+				break;
+			case "OK":
+				return 18;
+				break;
+			case "OR":
+				return 19;
+				break;
+			case "SC":
+				return 20;
+				break;
+			case "SD":
+				return 21;
+				break;
+			default:
+				return 0;
+		}
+	}
+/*******/
+
+//barChartDraw("WY", 1);
+
 //bsvg.exit().remove();
 
 function processDay(day){
@@ -423,14 +554,6 @@ function processDay(day){
 		default: return "Monday";	
 	}
 }
-
-//barChartDraw(0, "Friday");
-
-
-
-
-
-
 
 
 </script>
