@@ -222,7 +222,8 @@ var heatmapChart = function(valueOfState) {
               .attr("width", gridSize)
               .attr("height", gridSize)
              .style("fill", colors[0])
-		.on("mouseover", function(d){barChartDraw(currState, d.day)});
+		.on("mouseover", function(d){  barChartDraw(currState, d.day, d.hour);barColorChange();})
+		.on("mouseout", function(d){  barChartDraw(currState, d.day, 50); barColorChange();});
  
           cards.transition().duration(1000)
               .style("fill", function(d) { return colorScale(d.value); });
@@ -283,7 +284,7 @@ var newsvg = d3.select("#map").append("svg")
 			.attr('class', 'state')
 			.attr('d', mapSVG[state])
 			.attr("fill", "green")
-			.attr('fill-opacity', 0.7);			
+			.attr('fill-opacity', 0.5);			
 		}
 	//Making The Map Opaque
 	newsvg.selectAll("#map path")
@@ -296,7 +297,7 @@ var newsvg = d3.select("#map").append("svg")
 
                     d3.selectAll('path')
                             .style({
-                                'fill-opacity':.7
+                                'fill-opacity':0.5
                             });
                 })
 		.on('click', function() {
@@ -305,7 +306,7 @@ var newsvg = d3.select("#map").append("svg")
 		currState = d3.select(this).attr('id');
 		console.log(currState);
 		var stateIndex = getDataSet(currState) ;
-		barChartDraw(currState, 0);
+		barChartDraw(currState, 0, 50);
 			
 	});
 
@@ -317,9 +318,10 @@ var bmargin = {top: 20, right: 40, bottom: 20, left: 10},
     bheight = 200 - bmargin.top - bmargin.bottom;
 
 
+              
 
 
-var bx = d3.scale.ordinal().rangeRoundBands([0, bwidth], .5).range([0 ,24]);
+//var bx = d3.scale.ordinal().rangeRoundBands([0, bwidth], .5).range([0 ,24]);
 
 var by = d3.scale.linear().range([bheight, 0]);
 
@@ -332,18 +334,17 @@ var bsvg = d3.select("#bar").append("svg")
     .attr("transform", 
           "translate(" + bmargin.left + "," + bmargin.top + ")");
 
+ 
 
 
 
 
 
-
-
-
-var barChartDraw = function(stateValue, dayValue){
-	console.log(stateValue);stateValue = getStateSet(stateValue) ; console.log(stateValue);
-	dayValue = processDay(dayValue); console.log(dayValue);
-	console.log(typeof(dataFromJson));
+var barChartDraw = function(stateValue, dayValue ,hourValue){
+	hourValue = hourValue - 1;	
+	console.log(hourValue);
+	stateValue = getStateSet(stateValue) ; 
+	dayValue = processDay(dayValue); 
 	var keys = Object.keys(dataFromJson[stateValue]);
 	var valuesArray = [], valuesArrayTemp = [];
 	var heatMapObj = {};	
@@ -367,10 +368,23 @@ var barChartDraw = function(stateValue, dayValue){
       .attr("width", 7)
       .attr("y", function(d) {return by(d); })
       .attr("height", function(d) {/* console.log(bheight - by(d));*/ return bheight - by(d); })
-	.style('fill-opacity', .7)
-	bsvg.selectAll("#bar rect")
+	.style('fill-opacity', function(d , i){
+		if (i == hourValue){ return 1;}
+		else {return 0.4;}
+	})
+	barOpacityFunction();
+
+}
+	
+
+
+var barOpacityFunction = function(){
+		bsvg.selectAll("#bar rect")
 		.on('mouseover', function(d, i) {
-                var currentState = this;
+		var theBar = this;
+                for (var keys in theBar){
+			//console.log(keys);
+		}
                 d3.select(this).style('fill-opacity', 1);
            	//console.log(currentState);
                 })
@@ -378,11 +392,18 @@ var barChartDraw = function(stateValue, dayValue){
 
                     d3.selectAll('#bar rect')
                             .style({
-                                'fill-opacity':.7
+                                'fill-opacity':.4
                             });
-                });
+			
+                }); 
+
 }
-	
+
+var barColorChange = function(){
+		console.log("Color Change Called");  //d3.selectAll('#bar rect').remove();
+            d3.selectAll("#bar rect").style("fill", "green");
+}
+
 
 	function getDataSet(currstate){
 		//if(currstate === "AK"){heatmapChart(datasets[0]);}
