@@ -229,7 +229,7 @@ var heatmapChart = function(valueOfState) {
               .attr("width", gridSize)
               .attr("height", gridSize)
              .style("fill", colors[0])
-		.on("mouseover", function(d){d3.select(this).style('stroke-width', 1.5).style('stroke', 'red');
+		.on("mouseover", function(d){d3.select(this).style('stroke-width', 1.8).style('stroke', 'red');
                 barChartDraw(currState, d.day, d.hour);barColorChange();})
 		.on("mouseout", function(d){ d3.select(this).style('stroke-width', 1).style('stroke', 'white'); barChartDraw(currState, d.day, 50); barColorChange();});
  
